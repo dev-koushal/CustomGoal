@@ -1,46 +1,231 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
-    <link href="./output.css" rel="stylesheet" />
+    <title>LeetCode Revision Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body class="m-0 p-0">
+  <body>
+    <div class="main-container">
+      <!-- Left Panel: LeetCode Stats -->
+      <div class="panel stats-panel">
+        <h2 class="panel-title">LeetCode Profile</h2>
+        <div class="fetch-container">
+          <input
+            type="text"
+            id="leetcode-username"
+            placeholder="Enter LeetCode Username..."
+          />
+          <button id="fetch-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
 
-    <div
-      class="flex justify-evenly items-center bg-black min-h-screen w-full gap-5 font-bold"
-    >
-    <button class="mt- text-blue-500 h-9 px-7 rounded-full bg-amber-300 flex justify-center items-center "> Clickme </button>
-      <div
-        class="ml-2 h-[300px] w-[250px] bg-cyan-400 rounded-3xl p-2 text-center overflow-hidden"
-      >
-        <img
-          class="h-38 w-39 ml-8 mt-2 shadow-[0_4px_20px_rgba(0,0,2px,0.5)] rounded-lg"
-          src="https://cdn3d.iconscout.com/3d/free/thumb/free-tailwind-3d-icon-download-in-png-blend-fbx-gltf-file-formats--html-logo-css-framework-customizable-coding-lang-pack-logos-icons-7577995.png"
-          alt=""
-        />
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-        consectetur modi cum perferendis voluptatem placeat.
-      </div>
-      <div class="h-[300px] w-[250px] bg-amber-50 rounded-3xl p-2 text-center">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint itaque
-        iure corporis non, vel molestiae.
+        <div id="stats-content-wrapper">
+          <!-- Loading Skeleton -->
+          <div id="stats-loader" class="hidden">
+            <div class="skeleton h-16 w-full rounded-lg"></div>
+            <div class="flex justify-between mt-4">
+              <div class="skeleton h-24 w-24 rounded-full"></div>
+              <div class="skeleton h-24 w-24 rounded-full"></div>
+              <div class="skeleton h-24 w-24 rounded-full"></div>
+            </div>
+            <div class="skeleton h-28 w-full mt-4 rounded-lg"></div>
+          </div>
+
+          <!-- Stats Display -->
+          <div id="stats-display" class="hidden">
+            <div class="stat-card">
+              <p>Total Solved</p>
+              <h4 id="total-solved" class="stat-number">0</h4>
+            </div>
+
+            <div class="difficulty-circles">
+              <!-- Easy -->
+              <div class="circle-chart easy">
+                <svg viewBox="0 0 36 36">
+                  <path
+                    class="circle-bg"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    class="circle"
+                    id="easy-circle"
+                    stroke-dasharray="0, 100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" class="percentage">Easy</text>
+                </svg>
+                <div class="solved-count" id="easy-solved">0</div>
+              </div>
+              <!-- Medium -->
+              <div class="circle-chart medium">
+                <svg viewBox="0 0 36 36">
+                  <path
+                    class="circle-bg"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    class="circle"
+                    id="medium-circle"
+                    stroke-dasharray="0, 100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" class="percentage">Medium</text>
+                </svg>
+                <div class="solved-count" id="medium-solved">0</div>
+              </div>
+              <!-- Hard -->
+              <div class="circle-chart hard">
+                <svg viewBox="0 0 36 36">
+                  <path
+                    class="circle-bg"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <path
+                    class="circle"
+                    id="hard-circle"
+                    stroke-dasharray="0, 100"
+                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+                  <text x="18" y="20.35" class="percentage">Hard</text>
+                </svg>
+                <div class="solved-count" id="hard-solved">0</div>
+              </div>
+            </div>
+
+            <div class="heatmap-container">
+              <h3 class="heatmap-title">Submission Heatmap</h3>
+              <div id="heatmap-graph"></div>
+              <div id="heatmap-tooltip" class="hidden"></div>
+            </div>
+          </div>
+          <div
+            id="stats-error"
+            class="hidden text-center text-red-400 p-4"
+          ></div>
+        </div>
       </div>
 
-      <div class="h-[300px] w-[250px] bg-amber-50 rounded-3xl p-2 text-center">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto est ipsum
-        aliquam numquam vero incidunt.
+      <!-- Right Panel: Revision Tracker (No changes needed here) -->
+      <div class="panel tracker-panel">
+        <header class="tracker-header">
+          <div>
+            <h1 class="panel-title">Revision Tracker</h1>
+            <p id="current-date" class="text-sm text-gray-400 font-mono"></p>
+          </div>
+          <div class="action-controls">
+            <button
+              id="add-question-btn"
+              class="control-icon add-btn"
+              title="Add Question"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </button>
+            <div class="relative">
+              <button id="settings-btn" class="control-icon" title="Settings">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+              </button>
+              <div id="settings-menu" class="settings-menu">
+                <a href="#" id="view-toggle-btn">Show All</a>
+                <a href="#" id="sort-by-date-btn"
+                  >Sort by Date
+                  <i id="sort-icon" class="fa-solid fa-arrow-down-long ml-2"></i
+                ></a>
+                <div class="menu-divider"></div>
+                <a
+                  href="#"
+                  id="clear-by-date-btn"
+                  class="text-yellow-500 hover:bg-yellow-500/10"
+                  >Clear by Date...</a
+                >
+                <a
+                  href="#"
+                  id="clear-all-btn"
+                  class="text-red-500 hover:bg-red-500/10"
+                  >Clear All Data...</a
+                >
+              </div>
+            </div>
+          </div>
+        </header>
+        <div id="question-list-container">
+          <div id="empty-state" class="m-auto text-center">
+            <i class="fa-solid fa-ghost text-5xl text-gray-600"></i>
+            <h3 class="text-xl font-bold text-gray-400 mt-4">
+              ACE YOUR DSA GAME
+            </h3>
+            
+          </div>
+          <ul id="question-list"></ul>
+        </div>
       </div>
-
-      <div class="h-[300px] w-[250px] bg-amber-50 rounded-3xl p-2 text-center">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptate ex
-        soluta alias ducimus. Voluptatem ducimus facilis asperiores!
-      </div>
-      
     </div>
-     <div class="h-[200px] w-[300px] bg-emerald-800 m-20 rounded-full flex justify-center items-center">
-      <button class="bg-black py-4 px-6  text-white rounded-full border-4 shadow-md transition-all ease-in-out duration-400 hover:scale-110 " style="box-shadow: 0 0 10px 5px white;">Okieee</button>
-     </div>
+
+    <!-- Modals (No changes needed here) -->
+    <div id="add-modal" class="modal-backdrop hidden">
+      <div class="modal-content">
+        <h2 class="modal-title">New Revision Goal</h2>
+        <form id="add-question-form">
+          <input
+            type="text"
+            id="question-title"
+            class="modal-input"
+            placeholder="Title (e.g., LeetCode-121)"
+            required
+          /><input
+            type="url"
+            id="question-link"
+            class="modal-input"
+            placeholder="Problem Link"
+            required
+          /><input
+            type="date"
+            id="reminder-date"
+            class="modal-input"
+            required
+          />
+          <div class="modal-actions">
+            <button type="button" class="modal-btn cancel-btn">Cancel</button
+            ><button type="submit" class="modal-btn submit-btn">
+              Add Goal
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="confirm-modal" class="modal-backdrop hidden">
+      <div class="modal-content">
+        <h2 id="confirm-title" class="modal-title">Are you sure?</h2>
+        <p id="confirm-message" class="text-gray-300 my-4"></p>
+        <div id="confirm-extra-input" class="hidden my-4">
+          <input type="date" id="clear-date-input" class="modal-input" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-btn cancel-btn">Cancel</button
+          ><button
+            type="button"
+            id="confirm-action-btn"
+            class="modal-btn danger-btn"
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
   </body>
 </html>
