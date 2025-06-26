@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- STATE MANAGEMENT ---
+  
   let state = {
     questions: [],
     isShowingAll: false,
@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
     leetcodeUsername: "",
   };
 
-  // --- DOM ELEMENTS ---
+  
   const DOMElements = {
-    // LeetCode Stats
+    
     usernameInput: document.getElementById("leetcode-username"),
     fetchBtn: document.getElementById("fetch-btn"),
     statsLoader: document.getElementById("stats-loader"),
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mediumProgress: document.getElementById("medium-progress"),
     hardProgress: document.getElementById("hard-progress"),
 
-    // Revision Tracker
+    
     currentDateEl: document.getElementById("current-date"),
     questionList: document.getElementById("question-list"),
     emptyState: document.getElementById("empty-state"),
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     clearByDateBtn: document.getElementById("clear-by-date-btn"),
     clearAllBtn: document.getElementById("clear-all-btn"),
 
-    // Add Modal
+    
     addModal: {
       backdrop: document.getElementById("add-modal"),
       form: document.getElementById("add-question-form"),
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
       date: document.getElementById("reminder-date"),
     },
 
-    // Confirm Modal
+    
     confirmModal: {
       backdrop: document.getElementById("confirm-modal"),
       title: document.getElementById("confirm-title"),
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // --- API & DATA ---
+  
   const API = {
     leetCode: "https://leet-api.dev/",
     saveToLocalStorage: () =>
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // --- UTILITY & ANIMATION FUNCTIONS ---
+  
   const Utils = {
     getTodayString: () => new Date().toISOString().split("T")[0],
     formatDate: (dateString) =>
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // --- RENDER FUNCTIONS ---
+  
   const Render = {
     leetCodeStats: (data) => {
       DOMElements.statsLoader.classList.add("hidden");
@@ -187,7 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // --- EVENT HANDLERS & LOGIC ---
+ 
   const Handlers = {
     fetchLeetCodeData: async () => {
       const username = DOMElements.usernameInput.value.trim();
@@ -262,11 +262,9 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  // --- INITIALIZATION ---
   const init = () => {
     API.loadFromLocalStorage();
 
-    // Set initial UI states
     DOMElements.currentDateEl.textContent = Utils.formatDate(
       Utils.getTodayString()
     );
@@ -275,10 +273,8 @@ document.addEventListener("DOMContentLoaded", () => {
       Handlers.fetchLeetCodeData();
     }
 
-    // Render the revision list
     Render.revisionList();
 
-    // --- Attach Event Listeners ---
     DOMElements.fetchBtn.addEventListener("click", Handlers.fetchLeetCodeData);
     DOMElements.usernameInput.addEventListener(
       "keypress",
@@ -300,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Handlers.toggleQuestionStatus(parseInt(toggleBtn.dataset.id));
     });
 
-    // Settings Menu Logic
+    // Settings Menu 
     DOMElements.settingsBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       DOMElements.settingsMenu.classList.toggle("visible");
@@ -346,7 +342,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
     });
 
-    // Modal close buttons
     document.querySelectorAll(".cancel-btn").forEach((btn) =>
       btn.addEventListener("click", () => {
         Utils.toggleModal(DOMElements.addModal.backdrop, false);

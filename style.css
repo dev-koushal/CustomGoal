@@ -179,7 +179,7 @@ body {
   color: var(--hard-color);
 }
 
-/* Heatmap */
+
 .heatmap-container {
   position: relative;
 }
@@ -228,7 +228,7 @@ body {
   transition: opacity 0.2s;
 }
 
-/* Tracker Panel Styling (Mostly unchanged) */
+
 .tracker-header {
   display: flex;
   justify-content: space-between;
@@ -495,7 +495,6 @@ body {
   }
 }
 
-/* Responsiveness */
 @media (max-width: 1024px) {
   .main-container {
     grid-template-columns: 1fr;
