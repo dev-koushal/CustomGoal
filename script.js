@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
   const API = {
-    leetCode: `https://leet-api.dev/${username}`,
+    leetCode: `https://leetcode-stats-api.herokuapp.com/${username}`,
     saveToLocalStorage: () =>
       localStorage.setItem("revisionDashboardState", JSON.stringify(state)),
     loadFromLocalStorage: () => {
@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
       DOMElements.statsLoader.classList.remove("hidden");
 
       try {
-        const response = await fetch(`${API.leetCode}${username}`);
+        const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${username}`);
         const data = await response.json();
         if (data.errors) throw new Error(data.errors[0].message);
         Render.leetCodeStats(data);
