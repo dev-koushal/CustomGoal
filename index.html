@@ -45,6 +45,9 @@
           </div>
 
           <div id="stats-display" class="hidden">
+            <p class="text-gray-300 mb-4">
+              Username: <span id="profile-name" class="font-semibold text-white"></span>
+            </p>
             <div class="stat-card">
               <p>Total Solved</p>
               <h4 id="total-solved" class="stat-number">0</h4>
@@ -117,7 +120,6 @@
         </div>
       </div>
 
-      
       <div class="panel tracker-panel">
         <header class="tracker-header">
           <div>
@@ -163,16 +165,14 @@
           <div id="empty-state" class="m-auto text-center">
             <i class="fa-solid fa-ghost text-5xl text-gray-600"></i>
             <h3 class="text-xl font-bold text-gray-400 mt-4">
-            Push the Goal
+              ACE YOUR DSA GAME
             </h3>
-            
           </div>
           <ul id="question-list"></ul>
         </div>
       </div>
     </div>
 
-    
     <div id="add-modal" class="modal-backdrop hidden">
       <div class="modal-content">
         <h2 class="modal-title">New Revision Goal</h2>
