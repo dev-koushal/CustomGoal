@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
   let state = {
     questions: [],
     isShowingAll: false,
@@ -7,9 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     leetcodeUsername: "",
   };
 
-  
   const DOMElements = {
-    
     usernameInput: document.getElementById("leetcode-username"),
     fetchBtn: document.getElementById("fetch-btn"),
     statsLoader: document.getElementById("stats-loader"),
@@ -24,8 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     easyProgress: document.getElementById("easy-progress"),
     mediumProgress: document.getElementById("medium-progress"),
     hardProgress: document.getElementById("hard-progress"),
-
-    
     currentDateEl: document.getElementById("current-date"),
     questionList: document.getElementById("question-list"),
     emptyState: document.getElementById("empty-state"),
@@ -37,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
     clearByDateBtn: document.getElementById("clear-by-date-btn"),
     clearAllBtn: document.getElementById("clear-all-btn"),
 
-    
     addModal: {
       backdrop: document.getElementById("add-modal"),
       form: document.getElementById("add-question-form"),
@@ -46,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
       date: document.getElementById("reminder-date"),
     },
 
-    
     confirmModal: {
       backdrop: document.getElementById("confirm-modal"),
       title: document.getElementById("confirm-title"),
@@ -57,20 +50,17 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  
   const API = {
-    leetCode: `https://leetcode-stats-api.herokuapp.com/${username}`,
+    leetCode: (username) =>
+      `https://leetcode-stats-api.herokuapp.com/${username}`,
     saveToLocalStorage: () =>
       localStorage.setItem("revisionDashboardState", JSON.stringify(state)),
     loadFromLocalStorage: () => {
       const storedState = localStorage.getItem("revisionDashboardState");
-      if (storedState) {
-        Object.assign(state, JSON.parse(storedState));
-      }
+      if (storedState) Object.assign(state, JSON.parse(storedState));
     },
   };
 
-  
   const Utils = {
     getTodayString: () => new Date().toISOString().split("T")[0],
     formatDate: (dateString) =>
@@ -93,15 +83,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 15);
     },
     toggleModal: (modal, show) => {
-      if (show) {
-        modal.classList.remove("hidden");
-      } else {
-        modal.classList.add("hidden");
-      }
+      modal.classList.toggle("hidden", !show);
     },
   };
 
-  
   const Render = {
     leetCodeStats: (data) => {
       DOMElements.statsLoader.classList.add("hidden");
@@ -127,12 +112,14 @@ document.addEventListener("DOMContentLoaded", () => {
         (data.hardSolved / total) * 100
       }%`;
     },
+
     leetCodeError: (message) => {
       DOMElements.statsLoader.classList.add("hidden");
       DOMElements.statsDisplay.classList.add("hidden");
       DOMElements.statsError.textContent = message;
       DOMElements.statsError.classList.remove("hidden");
     },
+
     revisionList: () => {
       let questionsToDisplay = state.isShowingAll
         ? [...state.questions]
@@ -157,37 +144,29 @@ document.addEventListener("DOMContentLoaded", () => {
         li.className = `list-item ${q.status}`;
         li.style.animationDelay = `${index * 0.05}s`;
         li.innerHTML = `
-                    <div class="info">
-                        <p class="title">${q.title}</p>
-                        ${
-                          state.isShowingAll
-                            ? `<p class="date">${Utils.formatDate(
-                                q.reminderDate
-                              )}</p>`
-                            : ""
-                        }
-                    </div>
-                    <div class="actions">
-                        <button class="toggle-btn ${q.status}" data-id="${
-          q.id
-        }" title="Toggle Status">
-                            <i class="fa-solid ${
-                              q.status === "done"
-                                ? "fa-circle-check"
-                                : "fa-circle-xmark"
-                            }"></i>
-                        </button>
-                        <a href="${
-                          q.link
-                        }" target="_blank" title="View Problem"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
-                    </div>
-                `;
+          <div class="info">
+            <p class="title">${q.title}</p>
+            ${
+              state.isShowingAll
+                ? `<p class="date">${Utils.formatDate(q.reminderDate)}</p>`
+                : ""
+            }
+          </div>
+          <div class="actions">
+            <button class="toggle-btn ${q.status}" data-id="${q.id}" title="Toggle Status">
+              <i class="fa-solid ${
+                q.status === "done" ? "fa-circle-check" : "fa-circle-xmark"
+              }"></i>
+            </button>
+            <a href="${q.link}" target="_blank" title="View Problem">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>`;
         DOMElements.questionList.appendChild(li);
       });
     },
   };
 
- 
   const Handlers = {
     fetchLeetCodeData: async () => {
       const username = DOMElements.usernameInput.value.trim();
@@ -200,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
       DOMElements.statsLoader.classList.remove("hidden");
 
       try {
-        const response = await fetch(`https://leetcode-stats-api.herokuapp.com/${username}`);
+        const response = await fetch(API.leetCode(username));
         const data = await response.json();
         if (data.errors) throw new Error(data.errors[0].message);
         Render.leetCodeStats(data);
@@ -210,6 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
     },
+
     toggleQuestionStatus: (id) => {
       const question = state.questions.find((q) => q.id === id);
       if (question) {
@@ -218,6 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Render.revisionList();
       }
     },
+
     addQuestion: (e) => {
       e.preventDefault();
       state.questions.push({
@@ -231,6 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
       Render.revisionList();
       Utils.toggleModal(DOMElements.addModal.backdrop, false);
     },
+
     showConfirmation: (title, message, onConfirm, showDateInput = false) => {
       DOMElements.confirmModal.title.textContent = title;
       DOMElements.confirmModal.message.textContent = message;
@@ -246,6 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Utils.toggleModal(DOMElements.confirmModal.backdrop, false);
       };
     },
+
     clearByDate: () => {
       const dateToClear = DOMElements.confirmModal.dateInput.value;
       if (!dateToClear) return;
@@ -255,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
       API.saveToLocalStorage();
       Render.revisionList();
     },
+
     clearAll: () => {
       state.questions = [];
       API.saveToLocalStorage();
@@ -268,6 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
     DOMElements.currentDateEl.textContent = Utils.formatDate(
       Utils.getTodayString()
     );
+
     if (state.leetcodeUsername) {
       DOMElements.usernameInput.value = state.leetcodeUsername;
       Handlers.fetchLeetCodeData();
@@ -276,10 +261,9 @@ document.addEventListener("DOMContentLoaded", () => {
     Render.revisionList();
 
     DOMElements.fetchBtn.addEventListener("click", Handlers.fetchLeetCodeData);
-    DOMElements.usernameInput.addEventListener(
-      "keypress",
-      (e) => e.key === "Enter" && Handlers.fetchLeetCodeData()
-    );
+    DOMElements.usernameInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") Handlers.fetchLeetCodeData();
+    });
 
     document
       .getElementById("add-question-btn")
@@ -288,19 +272,21 @@ document.addEventListener("DOMContentLoaded", () => {
         DOMElements.addModal.date.value = Utils.getTodayString();
         Utils.toggleModal(DOMElements.addModal.backdrop, true);
       });
+
     DOMElements.addModal.form.addEventListener("submit", Handlers.addQuestion);
 
     DOMElements.questionList.addEventListener("click", (e) => {
       const toggleBtn = e.target.closest(".toggle-btn");
-      if (toggleBtn)
+      if (toggleBtn) {
         Handlers.toggleQuestionStatus(parseInt(toggleBtn.dataset.id));
+      }
     });
 
-    // Settings Menu 
     DOMElements.settingsBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       DOMElements.settingsMenu.classList.toggle("visible");
     });
+
     document.addEventListener("click", () =>
       DOMElements.settingsMenu.classList.remove("visible")
     );
@@ -352,3 +338,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   init();
 });
+
