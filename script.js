@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   
   const API = {
-    leetCode: "https://leet-api.dev/",
+    leetCode: `https://leet-api.dev/${username}`,
     saveToLocalStorage: () =>
       localStorage.setItem("revisionDashboardState", JSON.stringify(state)),
     loadFromLocalStorage: () => {
